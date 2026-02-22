@@ -1,0 +1,30 @@
+name: Cloudsmith OIDC Auth
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    id-token: write # Required for requesting the JWT
+    contents: read # Required for actions/checkout
+
+jobs:
+    authenticate:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Authenticate with Cloudsmith via OIDC
+              uses: cloudsmith-io/cloudsmith-cli-action@v1
+              with:
+                  # Your Cloudsmith Organization/Workspace name
+                  oidc-namespace: "your-org-slug"
+                  # The slug of the service account created in Step 2A
+                  oidc-service-slug: "github-actions-service"
+                  # If true, it just sets the CLOUDSMITH_API_KEY env var
+                  oidc-auth-only: "true"
+
+            - name: Verify Authentication
+              run: |
+                  cloudsmith whoami
