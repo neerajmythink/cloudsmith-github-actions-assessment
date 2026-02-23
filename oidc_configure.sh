@@ -61,7 +61,7 @@ oidc_create() {
      --data '
             {
             "claims": {
-                    "repositry_owner": "neerajmythink"
+                    "repository_owner": "neerajmythink"
                     },
             "enabled": true,
             "name": "'${OIDC_NAME}'",
