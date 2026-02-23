@@ -21,7 +21,7 @@ jobs:
                   # Your Cloudsmith Organization/Workspace name
                   oidc-namespace: "cloudsmith-org-neeraj"
                   # The slug of the service account created in Step 2A
-                  oidc-service-slug: "service_account"
+                  oidc-service-slug: "github-actions-service-zz47"
                   # If true, it just sets the CLOUDSMITH_API_KEY env var
                   oidc-auth-only: "true"
 
