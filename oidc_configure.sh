@@ -14,9 +14,7 @@ export SERVICE_DESC="This is a test service account created using cloudsmith API
 
 export OIDC_PROVIDER="https://token.actions.githubusercontent.com"
 export OIDC_NAME="github-actions-openid"
-export OIDC_CLAIM='{
-    "repository_owner": "neerajmythink"
-    }'
+export OIDC_CLAIM='{"repository_owner":"neerajmythink"}'
 
 # function to create a repository
 create_repo() {
@@ -60,9 +58,7 @@ oidc_create() {
      --header "X-Api-Key: ${API_KEY}" \
      --data '
             {
-            "claims": {
-                    "repository_owner": "neerajmythink"
-                    },
+            "claims": '"${OIDC_CLAIM}"',
             "enabled": true,
             "name": "'${OIDC_NAME}'",
             "provider_url": "'${OIDC_PROVIDER}'",
