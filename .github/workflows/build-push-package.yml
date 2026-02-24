@@ -2,7 +2,7 @@ name: Build and Push Package to Cloudsmith
 
 on:
   push:
-    branches: [ "build_and_push" ]
+    branches: [ "main" ]
 
 permissions:
   id-token: write # Mandatory for OIDC
