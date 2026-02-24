@@ -1,4 +1,4 @@
-name: Push Package to Cloudsmith
+name: Build and Push Package to Cloudsmith
 
 on:
   push:
@@ -33,6 +33,7 @@ jobs:
 
       - name: Build Package
         # This creates .whl and .tar.gz files in the dist/ folder
+        working-directory: ./python_package
         run: python -m build
     
       - name: Install Cloudsmith CLI
@@ -42,5 +43,6 @@ jobs:
             oidc-service-slug: ${{ env.CLOUDSMITH_SERVICE_SLUG }}
 
       - name: Push package to Cloudsmith
+        working-directory: ./python_package
         run: |
           cloudsmith push python ${{ env.CLOUDSMITH_NAMESPACE }}/${{ env.CLOUDSMITH_REPO_NAME }} dist/*
