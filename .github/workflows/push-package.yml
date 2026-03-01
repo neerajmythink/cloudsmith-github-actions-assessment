@@ -4,15 +4,15 @@ on:
   push:
     branches: [ "main" ]
 
-permissions:
-  id-token: write # Mandatory for OIDC
-  contents: read  # Required to checkout the repo
-
 # Define these so the ${{ env.VARIABLE }} syntax works
 env:
   CLOUDSMITH_NAMESPACE: ${{ vars.CLOUDSMITH_NAMESPACE }}
   CLOUDSMITH_SERVICE_SLUG: ${{ vars.CLOUDSMITH_SERVICE_SLUG }}
   CLOUDSMITH_REPO_NAME: 'github-actions-assessment-repo'
+
+permissions:
+  id-token: write # Mandatory for OIDC
+  contents: read  # Required to checkout the repo
 
 jobs:
   push-to-cloudsmith:
