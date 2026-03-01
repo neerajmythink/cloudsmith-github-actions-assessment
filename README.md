@@ -1,44 +1,52 @@
-## Task 1: Create an empty project and configure OIDC
-This guide demonstrates how to create an empty project in GitHub and configure OpenID Connect (OIDC) for secure authentication with Cloudsmith. This setup allows GitHub Actions to authenticate with Cloudsmith using OIDC, enabling secure interactions without the need for long-lived credentials. Using this we can securely push packages to Cloudsmith from GitHub Actions workflows.
+## Task 1: Set Up an Empty Project and Configure OIDC
 
-### Steps to Create a Project and Configure OIDC
-- Fork this repository in GitHub in your GitHub account and name it something like `cloudsmith-github-actions-assessment`.
-- Create a Cloudsmith account if you don't have one followed by a creation of a workspace if not already created.
-- Note down the workspace name and create a personal API key for authentication. You will need these values to set up the necessary secrets in your GitHub repository. The secrets you need to add are `CLOUDSMITH_NAMESPACE` and `CLOUDSMITH_API_KEY`.
-- Run the `oidc_configure.sh` script in the root of the repository to set up OIDC authentication for Cloudsmith. This script will create in Cloudsmith:
-  - 1. a repository in Cloudsmith to store your packages.
-  - 2. a service account in Cloudsmith for GitHub Actions to authenticate with OIDC.
-  - 3. an OpenID Connect provider configuration in Cloudsmith for the service account.
-  - 4. assign the necessary permissions for the service account to interact with the repository.
+This section explains how to create a new GitHub project and configure OpenID Connect (OIDC) for secure authentication with Cloudsmith. By using OIDC, GitHub Actions can authenticate with Cloudsmith without long-lived credentials, enabling secure package uploads.
 
-- Go to the created GitHub repository and add the necessary secrets to your GitHub repository. Go to the repository settings, navigate to the "Secrets and variables/Actions/Variables" section, and add the following secrets with name and value as mentioned below:
-  - 1. `CLOUDSMITH_NAMESPACE`= "my_namespace" | Your Cloudsmith namespace created in the Cloudsmith account.
-  - 2. `CLOUDSMITH_SERVICE_SLUG`= "github-actions-service-fvwv" | The slug of the service account created by the `oidc_configure.sh` script.
+### Steps to Set Up Project and OIDC Authentication
 
-- In the repository the file named `.github/workflows/oidc-auth.yml`. This file will contain the GitHub Actions workflow for OIDC authentication.
-- do some dummy edits to the file to trigger the workflow.
-- This workflow is configured to run on pushes to the `main` branch. Make sure to push your changes to this branch, this will trigger the workflow and execute the steps to authenticate with Cloudsmith using OIDC as configured in `oidc-auth.yml`.
-- Check the Actions tab in your GitHub repository to see the workflow execution and verify that the authentication with Cloudsmith using OIDC is successful.
+- Fork this repository in your GitHub account and name it (e.g., `cloudsmith-github-actions-assessment`).
+- Sign up for Cloudsmith and create a workspace if you don’t have one.
+- Note your Cloudsmith workspace name for later reference.
+- Generate a personal API key in Cloudsmith and save it in your environment variables.
+- Run the `oidc_configure.sh` script in the repository root. This script will:
+  1. Create a repository for your packages.
+  2. Set up a service account for GitHub Actions to use OIDC.
+  3. Configure an OpenID Connect provider for the service account.
+  4. Grant the service account permissions to manage the repository.
+- In your GitHub repository, add the following secrets under "Settings" > "Secrets and variables" > "Actions" > "Variables":
+  - `CLOUDSMITH_NAMESPACE`: Your Cloudsmith namespace (see `oidc_configure.sh`).
+  - `CLOUDSMITH_SERVICE_SLUG`: The slug of the service account created (e.g., "github-actions-service-fvwv") while running the `oidc_configure.sh` script.
+- Find the `.github/workflows/oidc-auth.yml` file in your repository. This workflow is set up to authenticate with Cloudsmith using OIDC when triggered.
+- Make a dummy change to any file in the repository to trigger the workflow.
+- Push your changes to the `main` branch to start the workflow and authenticate with Cloudsmith using OIDC.
+- Monitor the workflow run in the Actions tab to confirm successful authentication.
 
-## Task 2: Use Cloudsmith GHA module to push a package
-This guide demonstrates how to use the Cloudsmith GitHub Actions (GHA) module to push an already built package to Cloudsmith.
+## Task 2: Push a Package Using the Cloudsmith GHA Module
 
-### Steps to Push a Package to Cloudsmith
-- All the necessory components of cloudsmith is already set up from Task 1, so you can directly move to pushing a package.
-- Put a built package in the root of the repository. For example, you can create a simple `package.txt` file with some content to simulate a package.
-- Ensure you have the necessary permissions and OIDC configuration set up as described in Task 1.
-- perform some dummy edits to the package file to trigger the workflow.
-- This workflow is configured to run on pushes to the `main` branch. Make sure to push your changes to this branch, this will trigger the workflow and execute the steps to push the package to Cloudsmith as configured in `push-package.yml`.
-- Check the Actions tab in your GitHub repository to see the workflow execution and verify that the package is successfully pushed to Cloudsmith.
+This section describes how to use the Cloudsmith GitHub Actions module to upload a already built package to Cloudsmith.
+ - The workflow defined in `.github/workflows/push-package.yml` is set up to push a package to Cloudsmith when triggered.
+ - Ensure you have a built package (e.g. csm-cloudsmith-npm-cli-example-1.0.1.tgz) in the repository root to be uploaded.
+ - Make a minor edit to the package file to trigger the workflow, and push your changes to the `main` branch. This will start the workflow and upload the package to Cloudsmith.
 
-## Task 3: Use GHA to create a package
-This guide demonstrates how to use GitHub Actions to create a package and then push it to Cloudsmith.
+### Steps to Push a Package
 
-### Steps to Create and Push a Package to Cloudsmith
-- Create a simple Python package in your repository. For example, you can create a `python_package` directory with a `pyproject.toml` file and a simple module.
-- The `pyproject.toml` file should contain the necessary metadata for your package.
-- Ensure you have the necessary permissions and OIDC configuration set up as described in Task 1.
-- Perform some dummy edits to the package files to trigger the workflow.
-- This workflow is configured to run on pushes to the `main` branch. Make sure to push your changes to this branch, this will trigger the workflow and execute the steps to build the package and push it to Cloudsmith as configured in `build-push-package.yml`.
-- Check the Actions tab in your GitHub repository to see the workflow execution and verify that the package is successfully built and pushed to Cloudsmith.
+- With Cloudsmith already set up from Task 1, you can proceed to package upload.
+- Place a built package (e.g., a `package.txt` file) in the repository root.
+- Ensure OIDC and permissions are configured as described in Task 1.
+- Make a minor edit to the package file to trigger the workflow.
+- Push your changes to the `main` branch. This will start the workflow defined in `push-package.yml` and upload the package to Cloudsmith.
+- Check the Actions tab to verify the workflow ran and the package was pushed successfully.
+
+## Task 3: Build and Push a Package Using GitHub Actions
+
+This section guides you through creating a package with GitHub Actions and uploading it to Cloudsmith.
+
+### Steps to Build and Push a Package
+
+- Create a simple Python package in your repository (e.g., a `python_package` directory with a `pyproject.toml` and a module).
+- Add the necessary metadata to `pyproject.toml`.
+- Ensure OIDC and permissions are set up as in Task 1.
+- Make a small change to the package files to trigger the workflow.
+- Push your changes to the `main` branch. This will start the workflow in `build-push-package.yml`, build the package, and upload it to Cloudsmith.
+- View the Actions tab to confirm the package was built and pushed successfully.
 
